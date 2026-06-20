@@ -1,0 +1,26 @@
+# Dependencies — npm install recreates these; never commit them
+node_modules/
+
+# Environment variables — contain secrets like API keys, NEVER commit
+.env
+.env.local
+.env.production
+
+# Build output folders — generated files, not source
+dist/
+build/
+
+# Database files — local only
+*.db
+*.db-journal
+
+# Linux OS files
+.Trash-*
+
+# Editor config folders
+.vscode/
+.idea/
+
+# FFmpeg temp files
+*.tmp
+thumbnails/
