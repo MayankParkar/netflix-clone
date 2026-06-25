@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  watchHistory WatchHistory[]
+  @@map("users")
+}
+
+model Movie {
+  id           Int            @id @default(autoincrement())
+  title        String
+  year         Int?
+  quality      String         @default("unknown")
+  codec        String         @default("unknown")
+  filename     String         @unique
+  extension    String
+  sizeGB       Float
+  filePath     String
+  tmdbId       Int?           @unique
+  posterPath   String?
+  backdropPath String?
+  overview     String?
+  rating       Float?
+  runtime      Int?
+  genres       String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  watchHistory WatchHistory[]
+  @@index([title])
+  @@index([year])
+  @@index([rating])
+  @@map("movies")
+}
+
+model WatchHistory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  movieId   Int
+  progress  Float    @default(0)
+  watchedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie     Movie    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  @@unique([userId, movieId])
+  @@index([userId])
+  @@index([movieId])
+  @@map("watch_history")
+}

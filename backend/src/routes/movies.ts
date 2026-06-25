@@ -2,19 +2,19 @@ import { Router } from 'express';
 import {
   getAllMovies,
   getMovieById,
+  searchMovies,
   scanHDD,
 } from '../controllers/moviesController';
 
 const router = Router();
 
-// GET /api/v1/movies        — list all movies
-router.get('/', getAllMovies);
+// ORDER MATTERS — Express matches top to bottom, first match wins
+// /search must come before /:id
+// otherwise GET /search would match /:id with id="search"
 
-// GET /api/v1/movies/:id    — get one movie by id
-// The :id is a URL parameter — Express puts it in req.params.id
-router.get('/:id', getMovieById);
-
-// POST /api/v1/movies/scan  — scan the HDD for new video files
-router.post('/scan', scanHDD);
+router.get('/',        getAllMovies);   // GET /api/v1/movies
+router.get('/search',  searchMovies);  // GET /api/v1/movies/search?q=godfather
+router.get('/:id',     getMovieById);  // GET /api/v1/movies/1
+router.post('/scan',   scanHDD);       // POST /api/v1/movies/scan
 
 export default router;
