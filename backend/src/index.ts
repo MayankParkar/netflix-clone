@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import movieRoutes from './routes/movies';
 import healthRoutes from './routes/health';
 import testRoutes from './routes/test';
+import authRoutes from './routes/auth';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -14,13 +15,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(helmet({
-  // helmet blocks inline scripts and cross-origin resources by default
-  // We need to relax this for the test page's video player
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -29,12 +27,11 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes
 app.use('/api/v1/health', healthRoutes);
+app.use('/api/v1/auth',   authRoutes);
 app.use('/api/v1/movies', movieRoutes);
-app.use('/test', testRoutes);  // dev test page only
+app.use('/test', testRoutes);
 
-// Global error handler — must be last
 app.use(errorHandler);
 
 app.listen(PORT, () => {
