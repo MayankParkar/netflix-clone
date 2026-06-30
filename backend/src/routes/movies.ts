@@ -6,14 +6,15 @@ import {
   scanHDD,
 } from '../controllers/moviesController';
 import { streamVideo } from '../controllers/streamController';
+import { enrichMovies } from '../controllers/tmdbController';
 
 const router = Router();
 
-// ORDER MATTERS — specific routes before wildcard /:id
-router.get('/',           getAllMovies);    // GET /api/v1/movies
-router.get('/search',     searchMovies);   // GET /api/v1/movies/search?q=godfather
-router.get('/:id/stream', streamVideo);    // GET /api/v1/movies/1/stream
-router.get('/:id',        getMovieById);   // GET /api/v1/movies/1
-router.post('/scan',      scanHDD);        // POST /api/v1/movies/scan
+router.get('/',           getAllMovies);
+router.get('/search',     searchMovies);
+router.get('/:id/stream', streamVideo);
+router.get('/:id',        getMovieById);
+router.post('/scan',      scanHDD);
+router.post('/enrich',    enrichMovies);   // NEW — TMDB metadata enrichment
 
 export default router;
