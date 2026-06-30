@@ -20,6 +20,7 @@ app.use(helmet({
   // We need to relax this for the test page's video player
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 app.use(cors({
   origin: 'http://localhost:5173',
