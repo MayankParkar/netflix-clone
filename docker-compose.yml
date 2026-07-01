@@ -1,0 +1,48 @@
+# Docker Compose orchestrates multiple containers as one cohesive application
+# "version" is omitted intentionally — modern Compose (v2+) doesn't need it
+
+services:
+  backend:
+    build:
+      context: ./backend          # build using backend/Dockerfile
+      dockerfile: Dockerfile
+    container_name: netflix-clone-backend
+    ports:
+      # HOST_PORT:CONTAINER_PORT — maps port 3000 on your laptop to
+      # port 3000 inside the container
+      - "3000:3000"
+    environment:
+      # These override or supplement values from the backend's .env file
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=file:./prisma/dev.db
+    env_file:
+      # Loads the rest of the secrets (JWT secrets, TMDB key, HDD path)
+      # from the existing .env file — never hardcode secrets in this YAML
+      - ./backend/.env
+    volumes:
+      # Mounts your actual Seagate HDD into the container at the same path
+      # Without this, the container has no way to see your physical drive —
+      # containers are isolated from the host filesystem by default
+      - /media/seagate:/media/seagate:ro
+      # Persists the SQLite database file OUTSIDE the container
+      # Without this, every container restart would wipe your database,
+      # since a container's own filesystem layer is destroyed on removal
+      - backend_db:/app/prisma
+    restart: unless-stopped       # auto-restart if the container crashes
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: netflix-clone-frontend
+    ports:
+      - "5173:80"                 # map laptop's 5173 to Nginx's port 80
+    depends_on:
+      - backend                   # start backend before frontend
+    restart: unless-stopped
+
+# Named volume for persistent database storage
+# Docker manages where this actually lives on disk — you don't need to know
+volumes:
+  backend_db:

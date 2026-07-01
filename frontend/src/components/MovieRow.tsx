@@ -15,11 +15,10 @@ export function MovieRow({ title, movies, onPlay }: MovieRowProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (!rowRef.current) return;
-    const { scrollLeft, clientWidth } = rowRef.current;
+    const { clientWidth } = rowRef.current;
 
     // Scroll by roughly one screen width in the chosen direction
     const scrollAmount = direction === 'left' ? -clientWidth : clientWidth;
-
     rowRef.current.scrollBy({
       left: scrollAmount,
       behavior: 'smooth', // native smooth scroll animation
