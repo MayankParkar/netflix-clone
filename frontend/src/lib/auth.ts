@@ -4,7 +4,7 @@
 let accessToken: string | null = null;
 let refreshToken: string | null = null;
 
-const API_BASE = 'http://localhost:3000/api/v1';
+const API_BASE = 'http://13.126.231.29:3000/api/v1';
 
 export function setTokens(access: string, refresh: string) {
   accessToken = access;

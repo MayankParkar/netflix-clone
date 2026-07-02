@@ -1,7 +1,7 @@
 import type { Movie, ApiResponse } from '../types/movie';
 import { getAccessToken } from './auth';
 
-const API_BASE = 'http://localhost:3000/api/v1';
+const API_BASE = 'http://13.126.231.29:3000/api/v1';
 
 export async function fetchMovies(): Promise<Movie[]> {
   const res = await fetch(`${API_BASE}/movies`);
