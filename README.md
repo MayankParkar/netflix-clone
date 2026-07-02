@@ -2,8 +2,6 @@
 
 A full-stack video streaming platform built as a portfolio project, demonstrating end-to-end software engineering from local development through cloud deployment.
 
-![STREAMR Screenshot](https://via.placeholder.com/800x400?text=STREAMR+Netflix+Clone)
-
 ## Architecture
 ## Tech Stack
 
@@ -107,10 +105,6 @@ cd frontend && npm run dev
 # Run tests
 cd backend && npm test
 ```
-
-## Deployment
-
-See [AWS Deployment Guide](docs/aws-deployment.md) for full EC2 + S3 deployment instructions.
 
 ## License
 
